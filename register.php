@@ -7,52 +7,54 @@ require 'config/common.php';
 
 
 if ($_POST) {
-  if (empty($_POST['name']) || empty($_POST['email']) || empty($_POST['phone']) || empty($_POST['address'])
-  || empty($_POST['password']) || strlen($_POST['password']) < 4) {
-    if (empty($_POST['name'])) {
-      $nameError = 'Name is required';
-    }
-    if (empty($_POST['email'])) {
-      $emailError = 'Email is required';
-    }
-    if (empty($_POST['phone'])) {
-      $phoneError = 'Phone is required';
-    }
-    if (empty($_POST['address'])) {
-      $addressError = 'Address is required';
-    }
-    if (empty($_POST['password'])) {
-      $passwordError = 'Password is required';
-    }
-    if (strlen($_POST['password']) < 4) {
-      $passwordError = 'Password should be 4 chars at least';
-    }
-  }else{
-    $name = $_POST['name'];
-    $email = $_POST['email'];
-    $password = password_hash($_POST['password'],PASSWORD_DEFAULT);
-    $phone = $_POST['phone'];
-    $address = $_POST['address'];
+	if (
+		empty($_POST['name']) || empty($_POST['email']) || empty($_POST['phone']) || empty($_POST['address'])
+		|| empty($_POST['password']) || strlen($_POST['password']) < 4
+	) {
+		if (empty($_POST['name'])) {
+			$nameError = 'Name is required';
+		}
+		if (empty($_POST['email'])) {
+			$emailError = 'Email is required';
+		}
+		if (empty($_POST['phone'])) {
+			$phoneError = 'Phone is required';
+		}
+		if (empty($_POST['address'])) {
+			$addressError = 'Address is required';
+		}
+		if (empty($_POST['password'])) {
+			$passwordError = 'Password is required';
+		}
+		if (strlen($_POST['password']) < 4) {
+			$passwordError = 'Password should be 4 characters at least';
+		}
+	} else {
+		$name = $_POST['name'];
+		$email = $_POST['email'];
+		$password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+		$phone = $_POST['phone'];
+		$address = $_POST['address'];
 
-    $stmt = $pdo->prepare("SELECT * FROM users WHERE email=:email");
-    $result = $stmt->execute(
-      [':email'=>$email]
-    );
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
-    if ($user) {
-      echo "<script>alert('This email already exists.')</script>";
-    }else{
-      $stmt = $pdo->prepare("INSERT INTO users(name,email,phone,address,password) VALUES (:name,:email,:phone,:address,:password)");
+		$stmt = $pdo->prepare("SELECT * FROM users WHERE email=:email");
+		$result = $stmt->execute(
+			[':email' => $email]
+		);
+		$user = $stmt->fetch(PDO::FETCH_ASSOC);
+		if ($user) {
+			echo "<script>alert('This email already exists.')</script>";
+		} else {
+			$stmt = $pdo->prepare("INSERT INTO users(name,email,phone,address,password) VALUES (:name,:email,:phone,:address,:password)");
 
-      $result = $stmt->execute(
-          array(':name'=>$name,':email'=>$email,':phone'=>$phone,':address'=>$address,':password'=>$password)
-      );
+			$result = $stmt->execute(
+				array(':name' => $name, ':email' => $email, ':phone' => $phone, ':address' => $address, ':password' => $password)
+			);
 
-      if ($result) {
-        echo "<script>alert('Registration Success! You can now LogIn');window.location.href='login.php';</script>";
-      }
-    }
-  }
+			if ($result) {
+				echo "<script>alert('Registration Success! You can now LogIn');window.location.href='login.php';</script>";
+			}
+		}
+	}
 }
 
 
@@ -98,9 +100,10 @@ if ($_POST) {
 			<nav class="navbar navbar-expand-lg navbar-light main_box">
 				<div class="container">
 					<!-- Brand and toggle get grouped for better mobile display -->
-					<a class="navbar-brand logo_h" href="index.html"><h4>AP Shopping<h4></a>
-					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-					 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+					<a class="navbar-brand logo_h" href="index.html">
+						<h4>AP Shopping<h4>
+					</a>
+					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
@@ -148,36 +151,26 @@ if ($_POST) {
 					<div class="login_form_inner">
 						<h3>Register To Use Our Shopping Site</h3>
 						<form class="row login_form" action="register.php" method="post" id="contactForm" novalidate="novalidate">
-              <input name="_token" type="hidden" value="<?php echo $_SESSION['_token']; ?>">
+							<input name="_token" type="hidden" value="<?php echo $_SESSION['_token']; ?>">
 
-              <div class="col-md-12 form-group">
-								<input type="text" class="form-control" id="name" name="name" placeholder="Name"
-                style="<?php echo empty($nameError) ? '' : 'border: 1px solid red;';?>"
-                onfocus="this.placeholder = ''" onblur="this.placeholder = 'Name'">
+							<div class="col-md-12 form-group">
+								<input type="text" class="form-control" id="name" name="name" placeholder="Name" style="<?php echo empty($nameError) ? '' : 'border: 1px solid red;'; ?>" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Name'">
 							</div>
 							<div class="col-md-12 form-group">
-								<input type="text" class="form-control" id="name" name="email" placeholder="Email"
-                style="<?php echo empty($emailError) ? '' : 'border: 1px solid red;';?>"
-                onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email'">
-							</div>
-              <div class="col-md-12 form-group">
-								<input type="text" class="form-control" id="name" name="phone" placeholder="Phone"
-                style="<?php echo empty($phoneError) ? '' : 'border: 1px solid red;';?>"
-                onfocus="this.placeholder = ''" onblur="this.placeholder = 'Phone'">
-							</div>
-              <div class="col-md-12 form-group">
-								<input type="text" class="form-control" id="name" name="address" placeholder="Address"
-                style="<?php echo empty($addressError) ? '' : 'border: 1px solid red;';?>"
-                onfocus="this.placeholder = ''" onblur="this.placeholder = 'Address'">
+								<input type="text" class="form-control" id="name" name="email" placeholder="Email" style="<?php echo empty($emailError) ? '' : 'border: 1px solid red;'; ?>" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email'">
 							</div>
 							<div class="col-md-12 form-group">
-								<input type="password" class="form-control" id="name" name="password" placeholder="Password"
-                style="<?php echo empty($passwordError) ? '' : 'border: 1px solid red;';?>"
-                onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password'">
-                <p style="color:red;text-align:left;"><?php echo empty($passwordError) ? '' : $passwordError ?></p>
+								<input type="text" class="form-control" id="name" name="phone" placeholder="Phone" style="<?php echo empty($phoneError) ? '' : 'border: 1px solid red;'; ?>" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Phone'">
 							</div>
 							<div class="col-md-12 form-group">
-                <button type="submit" value="submit" class="primary-btn">Register</button>
+								<input type="text" class="form-control" id="name" name="address" placeholder="Address" style="<?php echo empty($addressError) ? '' : 'border: 1px solid red;'; ?>" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Address'">
+							</div>
+							<div class="col-md-12 form-group">
+								<input type="password" class="form-control" id="name" name="password" placeholder="Password" style="<?php echo empty($passwordError) ? '' : 'border: 1px solid red;'; ?>" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password'">
+								<p style="color:red;text-align:left;"><?php echo empty($passwordError) ? '' : $passwordError ?></p>
+							</div>
+							<div class="col-md-12 form-group">
+								<button type="submit" value="submit" class="primary-btn">Register</button>
 								<a href="login.php" class="primary-btn" style="color: white;">Login</a>
 							</div>
 						</form>
@@ -190,21 +183,22 @@ if ($_POST) {
 
 	<!-- start footer Area -->
 	<footer class="footer-area section_gap">
-	<div class="container">
-	<div class="footer-bottom d-flex justify-content-center align-items-center flex-wrap">
-	  <p class="footer-text m-0"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-	Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved</a>
-	<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-	</p>
-	</div>
-	</div>
+		<div class="container">
+			<div class="footer-bottom d-flex justify-content-center align-items-center flex-wrap">
+				<p class="footer-text m-0"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+					Copyright &copy;<script>
+						document.write(new Date().getFullYear());
+					</script> All rights reserved</a>
+					<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+				</p>
+			</div>
+		</div>
 	</footer>
 	<!-- End footer Area -->
 
 
 	<script src="js/vendor/jquery-2.2.4.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
-	 crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
 	<script src="js/vendor/bootstrap.min.js"></script>
 	<script src="js/jquery.ajaxchimp.min.js"></script>
 	<script src="js/jquery.nice-select.min.js"></script>

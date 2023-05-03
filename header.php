@@ -4,7 +4,7 @@ session_start();
 require 'config/common.php';
 
 if (empty($_SESSION['user_id']) && empty($_SESSION['logged_in'])) {
-  header('Location: login.php');
+	header('Location: login.php');
 }
 
 ?>
@@ -16,6 +16,9 @@ if (empty($_SESSION['user_id']) && empty($_SESSION['logged_in'])) {
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<!-- Favicon-->
 	<link rel="shortcut icon" href="img/fav.png">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
 	<!-- Author Meta -->
 	<meta name="author" content="CodePixar">
 	<!-- Meta Description -->
@@ -48,25 +51,26 @@ if (empty($_SESSION['user_id']) && empty($_SESSION['logged_in'])) {
 			<nav class="navbar navbar-expand-lg navbar-light main_box">
 				<div class="container">
 					<!-- Brand and toggle get grouped for better mobile display -->
-					<a class="navbar-brand logo_h" href="index.php"><h4>AP Shopping<h4></a>
-					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-					 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+					<a class="navbar-brand logo_h" href="index.php">
+						<h4>AP Shopping<h4>
+					</a>
+					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
 					<?php
 					$cart = 0;
-						if (isset($_SESSION['cart'])) {
-							foreach ($_SESSION['cart'] as $key => $qty) {
-								$cart += $qty;
-							}
+					if (isset($_SESSION['cart'])) {
+						foreach ($_SESSION['cart'] as $key => $qty) {
+							$cart += $qty;
 						}
+					}
 					?>
 					<!-- Collect the nav links, forms, and other content for toggling -->
 					<div class="collapse navbar-collapse offset" id="navbarSupportedContent">
 						<ul class="nav navbar-nav navbar-right">
-							<li class="nav-item"><a href="cart.php" class="cart"><span class="ti-bag"><?php echo $cart?></span></a></li>
+							<li class="nav-item"><a href="cart.php" class="cart"><span class="ti-bag"><?php echo $cart ?></span></a></li>
 							<li class="nav-item">
 								<button class="search"><span class="lnr lnr-magnifier" id="search"></span></button>
 							</li>
@@ -93,7 +97,7 @@ if (empty($_SESSION['user_id']) && empty($_SESSION['logged_in'])) {
 		<div class="container">
 			<div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
 				<div class="col-first">
-					<h1>Welcome <?php echo escape($_SESSION['username'])?></h1>
+					<h1>Welcome <i style="color:navy;font-family: 'Lobster', cursive;;"><?php echo escape($_SESSION['username']) ?></i></h1>
 					<a href="logout.php" class="primary-btn" style="line-height: 30px;color: black;background: white;">Logout</a>
 				</div>
 			</div>

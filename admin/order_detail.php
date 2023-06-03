@@ -87,14 +87,14 @@ if ($_SESSION['role'] != 1) {
             </table><br>
             <nav aria-label="Page navigation example" style="float:right">
               <ul class="pagination">
-                <li class="page-item"><a class="page-link" href="?pageno=1">First</a></li>
+                <li class="page-item"><a class="page-link" href="?id=<?= $GET['id'] ?>&pageno=1">First</a></li>
                 <li class="page-item <?php if ($pageno <= 1) {
                                         echo 'disabled';
                                       } ?>">
                   <a class="page-link" href="<?php if ($pageno <= 1) {
                                                 echo '#';
                                               } else {
-                                                echo "?pageno=" . ($pageno - 1);
+                                                echo "?id=" . $GET['id'] . "&pageno=" . ($pageno - 1);
                                               } ?>">Previous</a>
                 </li>
                 <li class="page-item"><a class="page-link" href="#"><?php echo $pageno; ?></a></li>
@@ -104,10 +104,10 @@ if ($_SESSION['role'] != 1) {
                   <a class="page-link" href="<?php if ($pageno >= $total_pages) {
                                                 echo '#';
                                               } else {
-                                                echo "?pageno=" . ($pageno + 1);
+                                                echo "?id=" . $GET['id'] . "&pageno=" . ($pageno + 1);
                                               } ?>">Next</a>
                 </li>
-                <li class="page-item"><a class="page-link" href="?pageno=<?php echo $total_pages ?>">Last</a></li>
+                <li class="page-item"><a class="page-link" href="?id=<?= $GET['id'] ?>&pageno=<?php echo $total_pages ?>">Last</a></li>
               </ul>
             </nav>
           </div>
@@ -121,4 +121,4 @@ if ($_SESSION['role'] != 1) {
   </div><!-- /.container-fluid -->
 </div>
 <!-- /.content -->
-<?php include('footer.html') ?>
+<?php include('footer.php') ?>

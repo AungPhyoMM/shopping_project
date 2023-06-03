@@ -28,42 +28,46 @@ if ($_POST) {
     }
     if (empty($_POST['quantity'])) {
       $qtyError = 'Quantity is required';
-    } elseif (is_numeric($_POST['quantity']) != 1) {
-      $qtyError = 'Quantity should be integer value';
     }
     if (empty($_POST['price'])) {
       $priceError = 'Price is required';
-    } elseif (is_numeric($_POST['price']) != 1) {
-      $priceError = 'Price should be integer value';
     }
     if (empty($_FILES['image'])) {
       $imageError = 'Image is required';
     }
-  } else { //validation success
-    $file = 'images/' . ($_FILES['image']['name']);
-    $imageType = pathinfo($file, PATHINFO_EXTENSION);
+  } else {
+    if (is_numeric($_POST['quantity']) != 1) {
+      $qtyError = 'Quantity should be integer value';
+    }
+    if (is_numeric($_POST['price']) != 1) {
+      $priceError = 'Price should be integer value';
+    }
+    if (!empty($qtyError) == '' && !empty($priceError) == '') {
+      $file = 'images/' . ($_FILES['image']['name']);
+      $imageType = pathinfo($file, PATHINFO_EXTENSION);
 
-    if ($imageType != 'jpg' && $imageType != 'jpeg' && $imageType != 'png') {
-      echo "<script>alert('Image should be jpg,jpeg,png');</script>";
-    } else { //image validation success
-      $name = $_POST['name'];
-      $desc = $_POST['description'];
-      $category = $_POST['category'];
-      $qty = $_POST['quantity'];
-      $price = $_POST['price'];
-      $image = $_FILES['image']['name'];
+      if ($imageType != 'jpg' && $imageType != 'jpeg' && $imageType != 'png') {
+        echo "<script>alert('Image should be jpg,jpeg,png');</script>";
+      } else { //image validation success
+        $name = $_POST['name'];
+        $desc = $_POST['description'];
+        $category = $_POST['category'];
+        $qty = $_POST['quantity'];
+        $price = $_POST['price'];
+        $image = $_FILES['image']['name'];
 
-      move_uploaded_file($_FILES['image']['tmp_name'], $file);
+        move_uploaded_file($_FILES['image']['tmp_name'], $file);
 
-      $stmt = $pdo->prepare("INSERT INTO products(name,description,categories_id,price,quantity,image)
-       VALUES (:name,:description,:category,:price,:quantity,:image)");
+        $stmt = $pdo->prepare("INSERT INTO products(name,description,categories_id,price,quantity,image)
+         VALUES (:name,:description,:category,:price,:quantity,:image)");
 
-      $result = $stmt->execute(
-        array(':name' => $name, ':description' => $desc, ':category' => $category, ':price' => $price, ':quantity' => $qty, ':image' => $image)
-      );
+        $result = $stmt->execute(
+          array(':name' => $name, ':description' => $desc, ':category' => $category, ':price' => $price, ':quantity' => $qty, ':image' => $image)
+        );
 
-      if ($result) {
-        echo "<script>alert('Product is added');window.location.href='index.php';</script>";
+        if ($result) {
+          echo "<script>alert('Product is added');window.location.href='index.php';</script>";
+        }
       }
     }
   }
@@ -109,12 +113,12 @@ if ($_POST) {
               <div class="form-group">
                 <label for="">Quantity</label>
                 <p style="color:red"><?php echo empty($qtyError) ? '' : '*' . $qtyError; ?></p>
-                <input type="number" class="form-control" name="quantity" value="">
+                <input type="text" class="form-control" name="quantity" value="">
               </div>
               <div class="form-group">
                 <label for="">Price</label>
                 <p style="color:red"><?php echo empty($priceError) ? '' : '*' . $priceError; ?></p>
-                <input type="number" class="form-control" name="price" value="">
+                <input type="text" class="form-control" name="price" value="">
               </div>
               <div class="form-group">
                 <label for="">Image</label>
@@ -135,4 +139,4 @@ if ($_POST) {
   </div><!-- /.container-fluid -->
 </div>
 <!-- /.content -->
-<?php include('footer.html') ?>
+<?php include('footer.php') ?>

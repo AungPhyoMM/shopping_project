@@ -1,9 +1,5 @@
 <?php include('header.php') ?>
-<?php
-if (empty($_SESSION['user_id']) && empty($_SESSION['logged_in'])) {
-    header('Location: login.php');
-}
-?>
+
 <!--================Cart Area =================-->
 <section class="cart_area">
     <div class="container">
